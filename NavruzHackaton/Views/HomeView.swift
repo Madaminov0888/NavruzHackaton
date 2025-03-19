@@ -6,10 +6,32 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct HomeView: View {
     var body: some View {
-        Text("Hello, World!")
+        ZStack {
+            Map()
+                .ignoresSafeArea()
+                .mapStyle(.standard)
+            
+            VStack {
+                Spacer()
+                
+                Rectangle()
+                    .fill(.black)
+                    .frame(height: 55)
+                    .frame(maxWidth: .infinity)
+            }
+            
+            VStack {
+                Spacer()
+                DraggableSheet {
+                    Text("Sheet is working")
+                }
+            }
+            .edgesIgnoringSafeArea(.bottom)
+        }
     }
 }
 

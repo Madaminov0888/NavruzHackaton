@@ -17,7 +17,6 @@ struct ProfileView: View {
             List {
                 Section {
                     profileSection()
-
                 }
                 
                 Section {

@@ -11,7 +11,6 @@ import UIKit
 protocol NetworkManagerProtocol {
     func fetchData<T:Codable>(for endpoint: URLEndpoints, type: T.Type) async throws -> T
     func postData<T:Codable>(for endpoint: URLEndpoints, data: T) async throws
-    func downloadImage(from url: String) async throws -> UIImage
 }
 
 
@@ -21,7 +20,6 @@ final class NetworkManager: NetworkManagerProtocol {
 
     init(session: URLSession = .shared) {
         let config = URLSessionConfiguration.default
-        config.requestCachePolicy = .returnCacheDataElseLoad
         self.session = URLSession(configuration: config)
     }
     
@@ -59,29 +57,6 @@ final class NetworkManager: NetworkManagerProtocol {
         
         let (_, resposne) = try await session.data(for: request)
         try handleHttpResponse(response: resposne)
-    }
-    
-    
-    func downloadImage(from url: String) async throws -> UIImage {
-        guard let url = URL(string: url) else {
-            throw NetworkErrors.invalidURL
-        }
-        let request = URLRequest(url: url)
-        if let cachedResponse = URLCache.shared.cachedResponse(for: request),
-           let image = UIImage(data: cachedResponse.data) {
-            return image
-        }
-        let (data, response) = try await session.data(for: request)
-        try handleHttpResponse(response: response)
-        
-        guard let image = UIImage(data: data) else {
-            throw NetworkErrors.invalidData
-        }
-        
-        let cachedResponse = CachedURLResponse(response: response, data: data)
-        URLCache.shared.storeCachedResponse(cachedResponse, for: request)
-        
-        return image
     }
     
 }

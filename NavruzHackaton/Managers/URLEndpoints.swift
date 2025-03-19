@@ -13,6 +13,7 @@ enum URLEndpoints {
     case user(userID: String)
     case postUser
     case trashBins
+    case categories
 
     var path: String {
         switch self {
@@ -22,6 +23,8 @@ enum URLEndpoints {
             return "user/"
         case .trashBins:
             return "trashbins/"
+        case .categories:
+            return "categories/"
         }
     }
 

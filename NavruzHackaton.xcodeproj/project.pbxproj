@@ -13,10 +13,40 @@
 		D51BE9C82D8973BC008C1C5D /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = D51BE9C72D8973BC008C1C5D /* FirebaseStorageCombine-Community */; };
 		D51BE9D62D899443008C1C5D /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = D51BE9D52D899443008C1C5D /* GoogleSignIn */; };
 		D51BE9D82D899443008C1C5D /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D51BE9D72D899443008C1C5D /* GoogleSignInSwift */; };
+		D585B0DF2D8BDD0D0016582F /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D585B0DE2D8BDD0C0016582F /* WidgetKit.framework */; };
+		D585B0E12D8BDD0D0016582F /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D585B0E02D8BDD0D0016582F /* SwiftUI.framework */; };
+		D585B0F02D8BDD0E0016582F /* GoGreenWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D585B0DD2D8BDD0C0016582F /* GoGreenWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D585B0EE2D8BDD0E0016582F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D51BE96F2D893962008C1C5D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D585B0DC2D8BDD0C0016582F;
+			remoteInfo = GoGreenWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D585B0F12D8BDD0E0016582F /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				D585B0F02D8BDD0E0016582F /* GoGreenWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		D51BE9772D893963008C1C5D /* NavruzHackaton.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NavruzHackaton.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D585B0DD2D8BDD0C0016582F /* GoGreenWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = GoGreenWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		D585B0DE2D8BDD0C0016582F /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		D585B0E02D8BDD0D0016582F /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -27,6 +57,13 @@
 			);
 			target = D51BE9762D893962008C1C5D /* NavruzHackaton */;
 		};
+		D585B0F52D8BDD0E0016582F /* Exceptions for "GoGreenWidget" folder in "GoGreenWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = D585B0DC2D8BDD0C0016582F /* GoGreenWidgetExtension */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -36,6 +73,14 @@
 				D51BE9CA2D89755B008C1C5D /* Exceptions for "NavruzHackaton" folder in "NavruzHackaton" target */,
 			);
 			path = NavruzHackaton;
+			sourceTree = "<group>";
+		};
+		D585B0E22D8BDD0D0016582F /* GoGreenWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				D585B0F52D8BDD0E0016582F /* Exceptions for "GoGreenWidget" folder in "GoGreenWidgetExtension" target */,
+			);
+			path = GoGreenWidget;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -54,6 +99,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D585B0DA2D8BDD0C0016582F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D585B0E12D8BDD0D0016582F /* SwiftUI.framework in Frameworks */,
+				D585B0DF2D8BDD0D0016582F /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -61,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				D51BE9792D893963008C1C5D /* NavruzHackaton */,
+				D585B0E22D8BDD0D0016582F /* GoGreenWidget */,
 				D51BE9C02D8973AC008C1C5D /* Frameworks */,
 				D51BE9782D893963008C1C5D /* Products */,
 			);
@@ -70,6 +125,7 @@
 			isa = PBXGroup;
 			children = (
 				D51BE9772D893963008C1C5D /* NavruzHackaton.app */,
+				D585B0DD2D8BDD0C0016582F /* GoGreenWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -77,6 +133,8 @@
 		D51BE9C02D8973AC008C1C5D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D585B0DE2D8BDD0C0016582F /* WidgetKit.framework */,
+				D585B0E02D8BDD0D0016582F /* SwiftUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -91,10 +149,12 @@
 				D51BE9732D893962008C1C5D /* Sources */,
 				D51BE9742D893962008C1C5D /* Frameworks */,
 				D51BE9752D893962008C1C5D /* Resources */,
+				D585B0F12D8BDD0E0016582F /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				D585B0EF2D8BDD0E0016582F /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				D51BE9792D893963008C1C5D /* NavruzHackaton */,
@@ -112,6 +172,28 @@
 			productReference = D51BE9772D893963008C1C5D /* NavruzHackaton.app */;
 			productType = "com.apple.product-type.application";
 		};
+		D585B0DC2D8BDD0C0016582F /* GoGreenWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D585B0F42D8BDD0E0016582F /* Build configuration list for PBXNativeTarget "GoGreenWidgetExtension" */;
+			buildPhases = (
+				D585B0D92D8BDD0C0016582F /* Sources */,
+				D585B0DA2D8BDD0C0016582F /* Frameworks */,
+				D585B0DB2D8BDD0C0016582F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				D585B0E22D8BDD0D0016582F /* GoGreenWidget */,
+			);
+			name = GoGreenWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = GoGreenWidgetExtension;
+			productReference = D585B0DD2D8BDD0C0016582F /* GoGreenWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -123,6 +205,9 @@
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
 					D51BE9762D893962008C1C5D = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					D585B0DC2D8BDD0C0016582F = {
 						CreatedOnToolsVersion = 16.2;
 					};
 				};
@@ -146,12 +231,20 @@
 			projectRoot = "";
 			targets = (
 				D51BE9762D893962008C1C5D /* NavruzHackaton */,
+				D585B0DC2D8BDD0C0016582F /* GoGreenWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		D51BE9752D893962008C1C5D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D585B0DB2D8BDD0C0016582F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -168,7 +261,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D585B0D92D8BDD0C0016582F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D585B0EF2D8BDD0E0016582F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D585B0DC2D8BDD0C0016582F /* GoGreenWidgetExtension */;
+			targetProxy = D585B0EE2D8BDD0E0016582F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		D51BE9832D893963008C1C5D /* Debug */ = {
@@ -305,6 +413,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = GoGreen;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "The app requests Always authorization.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "The app requests When in Use or Always authorization.";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -342,6 +451,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = GoGreen;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "The app requests Always authorization.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "The app requests When in Use or Always authorization.";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -364,6 +474,60 @@
 			};
 			name = Release;
 		};
+		D585B0F22D8BDD0E0016582F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = W5DTPZ2Q9H;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GoGreenWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = GoGreenWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.madaminov0888.NavruzHackaton.GoGreenWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D585B0F32D8BDD0E0016582F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = W5DTPZ2Q9H;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GoGreenWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = GoGreenWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.madaminov0888.NavruzHackaton.GoGreenWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -381,6 +545,15 @@
 			buildConfigurations = (
 				D51BE9862D893963008C1C5D /* Debug */,
 				D51BE9872D893963008C1C5D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D585B0F42D8BDD0E0016582F /* Build configuration list for PBXNativeTarget "GoGreenWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D585B0F22D8BDD0E0016582F /* Debug */,
+				D585B0F32D8BDD0E0016582F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

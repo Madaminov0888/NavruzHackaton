@@ -58,5 +58,12 @@ struct TrashBin: Codable, Identifiable {
         case images = "images"
         case dateCreated = "date_created"
     }
+    
+    static func ==(lhs: TrashBin, rhs: TrashBin?) -> Bool {
+        if let rhs = rhs {
+            return lhs.id == rhs.id
+        }
+        return false
+    }
 }
 

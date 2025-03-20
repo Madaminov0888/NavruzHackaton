@@ -9,18 +9,22 @@ import SwiftUI
 import MapKit
 
 struct HomeView: View {
+    
     @StateObject private var vm = HomeViewModel()
     @StateObject private var locationManager = LocationManager()
+    @StateObject private var liveActivityManager = LiveActivityManager()
     
     @State private var region = MKCoordinateRegion(
-            center: CLLocationCoordinate2D(latitude: 37.3349, longitude: -122.00902),
-            span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
-        )
+        center: CLLocationCoordinate2D(latitude: 37.3349, longitude: -122.00902),
+        span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+    )
     
     @State private var showSheet: Bool = false
     @State private var showInfoSheet: Bool = false
     @State private var selectedStat: String = "Weekly"
     @State private var ecoImpact: Int = 0
+    @State private var showLiveActivityAlert: Bool = false
+    @State private var selectedBinForTracking: TrashBin? = nil
     
     let statOptions = ["Weekly", "Monthly", "Yearly"]
     
@@ -31,17 +35,17 @@ struct HomeView: View {
                 showsUserLocation: true,
                 annotationItems: vm.trashBins.filter { $0.locationX != nil && $0.locationY != nil }
             ) { bin in
-                guard let x = bin.locationX, let y = bin.locationY else {
-                    return MapMarker(coordinate: region.center, tint: .gray)
-                }
-                return MapMarker(
+                MapAnnotation(
                     coordinate: CLLocationCoordinate2D(
-                        latitude: Double(x),
-                        longitude: Double(y)
-                    ),
-                    tint: vm.selectedCategory == nil || bin.categories?.contains(where: { $0 == vm.selectedCategory }) == true ? .red : .gray
-                )
+                        latitude: CLLocationDegrees(bin.locationX!),
+                        longitude: CLLocationDegrees(bin.locationY!)
+                    )
+                ) {
+                    annotationContent(for: bin)
+                }
             }
+
+
             .ignoresSafeArea()
             .mapStyle(.standard)
             .onReceive(locationManager.$location) { location in
@@ -50,15 +54,15 @@ struct HomeView: View {
                 }
             }
             
-            
             VStack {
                 Spacer()
                 
                 Rectangle()
-                    .fill(.black)
-                    .frame(height: 55)
+                    .fill(Color.black)
                     .frame(maxWidth: .infinity)
+                    .frame(height: 200)
             }
+            
             
             VStack {
                 Spacer()
@@ -184,6 +188,33 @@ struct HomeView: View {
                             }
                         }
                         
+                        
+                        HStack {
+                            Image(systemName: "arrow.trianglepath")
+                                .font(.caption)
+                                .foregroundColor(.green)
+                            
+                            Text("Tracking: Trash Bin")
+                                .font(.caption)
+                                .fontWeight(.medium)
+                            
+                            Spacer()
+                            
+                            Text("\(liveActivityManager.distanceToNearestBin)m")
+                                .font(.caption)
+                                .fontWeight(.bold)
+                            
+                            Button {
+                                liveActivityManager.endLiveActivity()
+                            } label: {
+                                Image(systemName: "xmark.circle.fill")
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                        .padding(10)
+                        .background(Color(UIColor.secondarySystemBackground))
+                        .cornerRadius(10)
+                        
                         // Leaderboard Button
                         NavigationLink(destination: LeaderboardView()) {
                             HStack {
@@ -233,12 +264,37 @@ struct HomeView: View {
                                 .clipShape(Circle())
                                 .shadow(radius: 4)
                         }
+                        
+                        // Live Activity control button
+                        if liveActivityManager.isActivityActive {
+                            Button {
+                                liveActivityManager.endLiveActivity()
+                            } label: {
+                                Image(systemName: "location.slash.fill")
+                                    .padding()
+                                    .background(Color.red.opacity(0.9))
+                                    .foregroundColor(.white)
+                                    .clipShape(Circle())
+                                    .shadow(radius: 4)
+                            }
+                        } else {
+                            Button {
+                                startLiveAcitivityWithNearest()
+                            } label: {
+                                Image(systemName: "location.magnifyingglass")
+                                    .padding()
+                                    .background(Color.accentColor.opacity(0.9))
+                                    .foregroundColor(.white)
+                                    .clipShape(Circle())
+                                    .shadow(radius: 4)
+                            }
+                        }
                     }
                     .font(.title3)
                     .foregroundColor(.blue)
                     .padding(.trailing, 16)
                     .padding(.bottom, 180)
-                    .offset(y: -130)
+                    .offset(y: -200)
                 }
             }
             .edgesIgnoringSafeArea(.bottom)
@@ -252,10 +308,107 @@ struct HomeView: View {
         .task {
             await vm.fetchTrashBins()
             await vm.fetchCategories()
-            // Initialize with a random impact value
             ecoImpact = Int.random(in: 5...30)
         }
+        
+        .alert("Track this bin?", isPresented: $showLiveActivityAlert) {
+            Button("Start Live Activity") {
+                if let bin = selectedBinForTracking {
+                    calculateDistanceToBin(bin) { distance in
+                        if let distance = distance {
+                            liveActivityManager.startLiveActivity(forBin: bin, distance: distance)
+                        }
+                    }
+                }
+            }
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("This will display your distance to the bin in a Live Activity that stays visible while you're using other apps.")
+        }
         .fontDesign(.rounded)
+    }
+    
+    // Helper function to calculate distance to bin
+    private func calculateDistanceToBin(_ bin: TrashBin, completion: @escaping (Int?) -> Void) {
+        guard let userLocation = locationManager.location,
+              let binLatitude = bin.locationX,
+              let binLongitude = bin.locationY else {
+            completion(nil)
+            return
+        }
+        
+        let binCoordinate = CLLocation(latitude: Double(binLatitude), longitude: Double(binLongitude))
+        let distanceInMeters = Int(userLocation.distance(from: binCoordinate))
+        
+        completion(distanceInMeters)
+    }
+    
+    // Helper to get appropriate icon for bin type
+    private func getBinIcon(for bin: TrashBin) -> String {
+        let categories = bin.categories?.map { $0.name.lowercased() } ?? []
+        
+        if categories.contains(where: { $0.contains("recycl") }) {
+            return "arrow.3.trianglepath"
+        } else if categories.contains(where: { $0.contains("paper") }) {
+            return "doc.fill"
+        } else if categories.contains(where: { $0.contains("glass") }) {
+            return "cup.and.saucer.fill"
+        } else if categories.contains(where: { $0.contains("plastic") }) {
+            return "bag.fill"
+        } else {
+            return "trash.fill"
+        }
+    }
+    
+    
+    private func startLiveAcitivityWithNearest() {
+        if !vm.trashBins.isEmpty {
+            
+            // Filter bins that have valid location data
+            let binsWithLocation = vm.trashBins.filter { bin in
+                bin.locationX != nil && bin.locationY != nil
+            }
+            
+            // Find the nearest bin
+            var nearestBin: TrashBin? = nil
+            var shortestDistance: CLLocationDistance = Double.infinity
+            
+            for bin in binsWithLocation {
+                guard let binLatitude = bin.locationX,
+                      let binLongitude = bin.locationY else { continue }
+                
+                let binLocation = CLLocation(latitude: Double(binLatitude), longitude: Double(binLongitude))
+                let distance = locationManager.location?.distance(from: binLocation)
+                
+                if distance ?? 0 < shortestDistance {
+                    shortestDistance = distance ?? 0
+                    nearestBin = bin
+                }
+            }
+            
+            // Start live activity with the nearest bin if found
+            if let nearestBin = nearestBin {
+                let distanceInMeters = Int(shortestDistance)
+                liveActivityManager.startLiveActivity(forBin: nearestBin, distance: distanceInMeters)
+            }
+        }
+    }
+    
+    // Helper to get appropriate color for bin type
+    private func getBinColor(for bin: TrashBin) -> Color {
+        let categories = bin.categories?.map { $0.name.lowercased() } ?? []
+        
+        if categories.contains(where: { $0.contains("recycl") }) {
+            return .blue
+        } else if categories.contains(where: { $0.contains("paper") }) {
+            return .green
+        } else if categories.contains(where: { $0.contains("glass") }) {
+            return .orange
+        } else if categories.contains(where: { $0.contains("plastic") }) {
+            return .purple
+        } else {
+            return .gray
+        }
     }
 }
 
@@ -295,7 +448,7 @@ extension HomeView {
             }
             .clipShape(RoundedRectangle(cornerRadius: 20))
             .clipped()
-
+            
             
             HStack {
                 VStack(alignment: .leading) {
@@ -393,6 +546,57 @@ extension HomeView {
         .padding(8)
         .background(Color(UIColor.secondarySystemBackground))
         .cornerRadius(15)
+    }
+    
+    
+    
+    @ViewBuilder
+    func annotationContent(for bin: TrashBin) -> some View {
+        VStack(spacing: 0) {
+            Image(systemName: getBinIcon(for: bin))
+                .font(.system(size: 20))
+                .foregroundColor(.white)
+                .padding(8)
+                .background(getBinColor(for: bin))
+                .clipShape(Circle())
+                .shadow(radius: 2)
+            
+            if bin == vm.selectedTrashBin {
+                VStack(spacing: 4) {
+                    Text("Trash Bin")
+                        .font(.caption)
+                        .fontWeight(.medium)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(Color.white)
+                        .cornerRadius(8)
+                        .shadow(radius: 1)
+                    
+                    Button {
+                        liveActivityManager.endLiveActivity()
+                        selectedBinForTracking = bin
+                        calculateDistanceToBin(bin) { distance in
+                            if let _ = distance {
+                                showLiveActivityAlert = true
+                            }
+                        }
+                    } label: {
+                        Text("Track")
+                            .font(.caption2)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 4)
+                            .background(Color.green)
+                            .cornerRadius(12)
+                    }
+                }
+                .offset(y: 5)
+            }
+        }
+        .onTapGesture {
+            vm.selectedTrashBin = bin
+        }
     }
 }
 

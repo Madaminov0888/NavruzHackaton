@@ -75,6 +75,7 @@ struct DraggableSheet<Content: View>: View {
                     .padding(.horizontal)
                     .padding(.bottom, 20)
             }
+            .scrollIndicators(.hidden)
             // Disable scrolling when in compact mode
             .scrollDisabled(!isExpanded)
         }

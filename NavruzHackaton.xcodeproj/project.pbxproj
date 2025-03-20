@@ -303,6 +303,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NavruzHackaton/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = GoGreen;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "The app requests Always authorization.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "The app requests When in Use or Always authorization.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -338,6 +340,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NavruzHackaton/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = GoGreen;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "The app requests Always authorization.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "The app requests When in Use or Always authorization.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

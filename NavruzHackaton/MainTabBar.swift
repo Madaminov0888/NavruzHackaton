@@ -11,12 +11,14 @@ struct MainTabBar: View {
     @AppStorage("isAuthed") var isAuthed: Bool = false
     @State var selectedTab: Int = 0
     
+    @State private var showAddView: Bool = false
+    
     var body: some View {
         ZStack {
             if isAuthed {
                 CustomTabView(selectedIndex: $selectedTab,
                               centerButton: CenterButton(icon: "plus", backgroundColor: .accent, iconColor: .white, action: {
-                    print("plus button pressed")
+                    self.showAddView = true
                 })) {
                     TabItemWithView(title: "Home", image: "house", selectedImage: "house.fill") {
                         NavigationStack {
@@ -30,6 +32,11 @@ struct MainTabBar: View {
                             ProfileView()
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                         }
+                    }
+                }
+                .fullScreenCover(isPresented: $showAddView) {
+                    NavigationStack {
+                        AddTrashBinView()
                     }
                 }
             } else {

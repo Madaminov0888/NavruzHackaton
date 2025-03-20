@@ -1,0 +1,86 @@
+[
+  {
+    "shortDescription" : "Ultralytics best model trained on \/content\/Garbage-Bins-1\/data.yaml",
+    "metadataOutputVersion" : "3.0",
+    "outputSchema" : [
+      {
+        "hasShapeFlexibility" : "0",
+        "isOptional" : "0",
+        "dataType" : "Float32",
+        "formattedType" : "MultiArray (Float32 1 × 5 × 13125)",
+        "shortDescription" : "",
+        "shape" : "[1, 5, 13125]",
+        "name" : "var_913",
+        "type" : "MultiArray"
+      }
+    ],
+    "version" : "8.2.103",
+    "modelParameters" : [
+
+    ],
+    "author" : "Ultralytics",
+    "specificationVersion" : 6,
+    "storagePrecision" : "Float16",
+    "license" : "AGPL-3.0 License (https:\/\/ultralytics.com\/license)",
+    "mlProgramOperationTypeHistogram" : {
+      "Concat" : 19,
+      "Silu" : 57,
+      "Sub" : 2,
+      "Transpose" : 1,
+      "UpsampleNearestNeighbor" : 2,
+      "Softmax" : 1,
+      "Mul" : 3,
+      "Cast" : 2,
+      "Reshape" : 5,
+      "Add" : 8,
+      "MaxPool" : 3,
+      "Sigmoid" : 1,
+      "Split" : 10,
+      "Conv" : 64
+    },
+    "computePrecision" : "Mixed (Float16, Float32, Int32)",
+    "stateSchema" : [
+
+    ],
+    "isUpdatable" : "0",
+    "availability" : {
+      "macOS" : "12.0",
+      "tvOS" : "15.0",
+      "visionOS" : "1.0",
+      "watchOS" : "8.0",
+      "iOS" : "15.0",
+      "macCatalyst" : "15.0"
+    },
+    "modelType" : {
+      "name" : "MLModelType_mlProgram"
+    },
+    "inputSchema" : [
+      {
+        "height" : "800",
+        "colorspace" : "RGB",
+        "isOptional" : "0",
+        "width" : "800",
+        "isColor" : "1",
+        "formattedType" : "Image (Color 800 × 800)",
+        "hasSizeFlexibility" : "0",
+        "type" : "Image",
+        "shortDescription" : "",
+        "name" : "image"
+      }
+    ],
+    "userDefinedMetadata" : {
+      "stride" : "32",
+      "com.github.apple.coremltools.version" : "8.2",
+      "com.github.apple.coremltools.source" : "torch==2.6.0+cu124",
+      "com.github.apple.coremltools.source_dialect" : "TorchScript",
+      "task" : "detect",
+      "docs" : "https:\/\/docs.ultralytics.com",
+      "imgsz" : "[800, 800]",
+      "date" : "2025-03-18T06:01:28.101184",
+      "batch" : "1",
+      "names" : "{0: 'trash-bins'}"
+    },
+    "generatedClassName" : "trash_bin_yolov8_coreml",
+    "method" : "predict"
+  }
+]

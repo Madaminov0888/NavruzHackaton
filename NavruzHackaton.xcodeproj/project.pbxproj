@@ -64,6 +64,14 @@
 			);
 			target = D585B0DC2D8BDD0C0016582F /* GoGreenWidgetExtension */;
 		};
+		D585B10C2D8BFB570016582F /* Exceptions for "NavruzHackaton" folder in "GoGreenWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Extensions+/model.mlmodelc",
+				"Extensions+/UIImage+.swift",
+			);
+			target = D585B0DC2D8BDD0C0016582F /* GoGreenWidgetExtension */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -71,6 +79,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				D51BE9CA2D89755B008C1C5D /* Exceptions for "NavruzHackaton" folder in "NavruzHackaton" target */,
+				D585B10C2D8BFB570016582F /* Exceptions for "NavruzHackaton" folder in "GoGreenWidgetExtension" target */,
 			);
 			path = NavruzHackaton;
 			sourceTree = "<group>";

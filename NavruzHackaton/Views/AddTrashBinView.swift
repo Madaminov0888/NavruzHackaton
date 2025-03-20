@@ -10,6 +10,8 @@ import MapKit
 
 struct AddTrashBinView: View {
     @StateObject private var vm = AddTrashBinViewModel()
+    @StateObject private var modelManager = MyModelManager()
+    
     @State private var selectedImage: UIImage?
     @State private var showingImagePicker = false
     @State private var showingCamera = false
@@ -20,18 +22,16 @@ struct AddTrashBinView: View {
         span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
     )
     @State private var selectedCategory: BinCategory?
+    @State private var showingResultAlert = false
+    @State private var resultAlertTitle = ""
+    @State private var resultAlertMessage = ""
+    @State private var isSuccessful = false
+    
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
-                // Title
-//                Text("Add New Trash Bin")
-//                    .font(.largeTitle)
-//                    .fontWeight(.bold)
-//                    .padding(.top, 8)
-                
-                // Image picker area
                 ZStack {
                     RoundedRectangle(cornerRadius: 16)
                         .fill(Color(.systemGray6))
@@ -155,29 +155,14 @@ struct AddTrashBinView: View {
                 }
                 
                 // Submit button
-                Button(action: {
-                    // Implement submission logic
-                }) {
-                    Text("Add Trash Bin")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(
-                            LinearGradient(
-                                gradient: Gradient(colors: [Color.blue, Color.blue.opacity(0.8)]),
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            )
-                            .clipShape(RoundedRectangle(cornerRadius: 14))
-                        )
-                        .shadow(color: .blue.opacity(0.3), radius: 5, x: 0, y: 3)
-                }
-                .padding(.top, 8)
-                .disabled(selectedImage == nil || selectedCategory == nil || address.isEmpty)
-                .opacity((selectedImage == nil || selectedCategory == nil || address.isEmpty) ? 0.6 : 1)
+                SumbitButton()
             }
             .padding()
+        }
+        .onChange(of: selectedImage) { newImage in
+            if let image = newImage, let pixelBuffer = image.toCVPixelBuffer() {
+                modelManager.predict(input: pixelBuffer)
+            }
         }
         .task {
             await vm.fetchCategories()
@@ -201,7 +186,64 @@ struct AddTrashBinView: View {
             }
         })
     }
+    
+    
+    
+    
+    @ViewBuilder private func SumbitButton() -> some View {
+        VStack {
+            Button(action: {
+                if modelManager.predictionPercentage >= 75 {
+                    resultAlertTitle = "Trash Bin Detected"
+                    resultAlertMessage = "Trash bin found with \(modelManager.predictionPercentage)% confidence. Accepting and dismissing."
+                    isSuccessful = true
+                } else {
+                    resultAlertTitle = "Error"
+                    resultAlertMessage = "Trash bin not found in the image."
+                    isSuccessful = false
+                }
+                showingResultAlert = true
+            }) {
+                Text("Add Trash Bin")
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(
+                        LinearGradient(
+                            gradient: Gradient(colors: [Color.blue, Color.blue.opacity(0.8)]),
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                    )
+                    .shadow(color: .blue.opacity(0.3), radius: 5, x: 0, y: 3)
+            }
+            .padding(.top, 8)
+            .disabled(selectedImage == nil || selectedCategory == nil || address.isEmpty)
+            .opacity((selectedImage == nil || selectedCategory == nil || address.isEmpty) ? 0.6 : 1)
+        }
+        }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 struct CategoryButton: View {
     let category: BinCategory
